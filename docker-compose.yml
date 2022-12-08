@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+    api:
+        build: .
+        env_file:
+            - .env
+        depends_on:
+            - mongodb
+        volumes:
+            - .:/app
+        ports:
+            - ${PORT}:${PORT}
+        restart: always
+        command: yarn run start
+
+    mongodb:
+        image: mongo:3.6
+        container_name: mongodb2
+        restart: always
+        volumes:
+            - .:/app/mongo
+        ports:
+            - ${DB_PORT}:27017
+        environment:
+            MONGO_INITDB_DATABASE: ${DB_NAME}
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
